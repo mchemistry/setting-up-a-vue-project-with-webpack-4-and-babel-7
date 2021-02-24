@@ -12,6 +12,7 @@
 </template>
 
 <script>
+
 import { ValidationProvider } from "vee-validate";
 
 export default {
@@ -51,3 +52,14 @@ export default {
   }
 };
 </script>
+
+
+<style lang="scss" scoped>
+.input {
+  background: green !important;
+  width: 320px;
+  border: 1px solid green;
+
+}
+
+</style>
