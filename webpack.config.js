@@ -15,7 +15,7 @@ const config = {
   entry: path.join(__dirname, `src`, `main.js`),
   mode: env,
   output: {
-    publicPath: `/`,
+    publicPath: ``,
   },
   optimization: {
     splitChunks: {
