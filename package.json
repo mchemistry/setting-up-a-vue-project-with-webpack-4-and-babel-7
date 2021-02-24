@@ -53,5 +53,13 @@
     "webpack": "^4.4.1",
     "webpack-cli": "^3.2.3",
     "webpack-serve": "^0.3.0"
+  },
+  "eslintConfig": {
+    "rules": {
+      "no-unused-vars": "off",
+      "no-console": [
+        "warn",{ "allow":[ "clear", "info", "error", "dir", "trace", "log"]}
+      ]
+    }
   }
 }

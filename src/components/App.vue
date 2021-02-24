@@ -4,8 +4,9 @@
       <p class="contact-side__title py-3 mb-3">
         Nhận tư vấn hỗ trợ
       </p>
-      <ValidationObserver ref="observer" class="contact-side-left">
-        <section class="section p-0" slot-scope="{ validate }">
+      <!-- eslint-disable-next-line vue/no-unused-vars -->
+      <ValidationObserver ref="observer" class="contact-side-left" v-slot="{ invalid }">
+        <section class="section p-0">
           <div class="mb-4">
             <BInputWithValidation
               rules="required"
@@ -40,13 +41,13 @@
           </div>
 
           <div class="buttons">
-            <button class="button is-success" @click="validate().then(submit)" :disabled="errors.any()">
+            <b-button class="button is-success" @click="validate().then(submit)" :disabled="invalid">
               <span>Submit</span>
-            </button>
+            </b-button>
 
-            <button class="button" @click="resetForm">
+            <b-button class="button" @click="resetForm">
               <span>Reset</span>
-            </button>
+            </b-button>
           </div>
         </section>
       </ValidationObserver>
