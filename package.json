@@ -15,9 +15,11 @@
     "lint": "npm run lint:scripts && npm run lint:styles"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "buefy": "^0.9.4",
     "normalize.css": "^8.0.0",
     "reset-css": "^3.0.0",
+    "save": "^2.4.0",
     "vee-validate": "^3.4.5",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1"
@@ -58,7 +60,17 @@
     "rules": {
       "no-unused-vars": "off",
       "no-console": [
-        "warn",{ "allow":[ "clear", "info", "error", "dir", "trace", "log"]}
+        "warn",
+        {
+          "allow": [
+            "clear",
+            "info",
+            "error",
+            "dir",
+            "trace",
+            "log"
+          ]
+        }
       ]
     }
   }

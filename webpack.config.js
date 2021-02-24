@@ -12,7 +12,7 @@ const minify = env === `production`;
 const sourceMap = env === `development`;
 
 const config = {
-  entry: path.join(__dirname, `src`, `main.js`),
+  entry: ['babel-polyfill', path.join(__dirname, `src`, `main.js`)],
   mode: env,
   output: {
     publicPath: ``,
