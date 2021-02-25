@@ -31,12 +31,13 @@ export default {
 <style lang="scss" scoped>
 .address-container {
     color: #031D35;
-    font-size: 15px;
+    font-size: 16px;
     position: relative;
     left: 0;
     .address-name {
-        font-size: 12px;
+        font-size: 13px;
         line-height: 1.5;
+        font-weight: 500;
     }
     .location {
         width: 40px;
@@ -44,14 +45,16 @@ export default {
     }
 }
 .go-to-map {
-    padding: 4px 4px 4px 6px;
+    padding: 4px 4px 4px 6px !important;
     background: #2469c4;
     border-radius: 5px;
     color: white;
-    text-decoration: none;
-    font-size: 12px;
+    display: flex;
+    align-items: center;
+    text-decoration: none !important;
+    font-size: 12px !important;
     &:hover {
-        background: #45b4e4;
+        background: #45b4e4 !important;
         transition: background 0.3s;
     }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="contact-us">
-    <div class="contact-container">
+    <div class="contact-container" :style="styleContactContainer" @resize="handleResize($event)">
       <transition name="show-right">
         <div
           v-if="showMessage"
@@ -16,7 +16,7 @@
         </div>
       </transition>
       <div class="contact__side-left">
-        <p class="contact-side__title py-3 mb-3">Nhận tư vấn hỗ trợ</p>
+        <p class="contact-side__title py-3 mb-3" :style="styleP">Nhận tư vấn hỗ trợ</p>
         <!-- eslint-disable-next-line vue/no-unused-vars -->
         <ValidationObserver
           ref="observer"
@@ -33,6 +33,7 @@
                 name="name"
                 placeholder="Nhập tên của bạn ..."
                 v-model="name"
+                :disable="loading"
               />
             </div>
 
@@ -43,6 +44,7 @@
                 name="phone"
                 label="Số điện thoại"
                 v-model="phone"
+                :disable="loading"
                 placeholder="Nhập số điện thoại của bạn ..."
               />
             </div>
@@ -55,6 +57,7 @@
                 type="textarea"
                 label="Nội dung cần hỗ trợ"
                 v-model="subject"
+                :disable="loading"
               />
             </div>
 
@@ -75,7 +78,7 @@
           </section>
         </ValidationObserver>
       </div>
-      <p class="contact-side__title py-3 my-3">chúng tôi trên google map</p>
+      <p class="contact-side__title py-3 my-3" :style="styleP">chúng tôi trên google map</p>
       <div class="contact__side-right">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3742.4911878713538!2d106.06453591554185!3d20.279926186408797!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3136754b6af1b95d%3A0xac4ec23fd4188177!2sTAM%20QUANG!5e0!3m2!1svi!2s!4v1614127124824!5m2!1svi!2s"
@@ -86,12 +89,12 @@
         ></iframe>
       </div>
     </div>
-    <div class="is-flex is-full contact-address mx">
+    <div class="is-flex is-full contact-address mx is-flex-direction-column">
       <div class="is-flex-grow-1">
-        <div class="column">
-          <Address address-name="Tòa nhà FADI TOWER, Tam Quang,Xã Yên Thắng, Huyện Ý Yên,Tỉnh Nam Định."/>
+        <div class="column mt-2">
+          <Address address-name="Tòa nhà <span style='font-weight: bold;'><span style='color: #4E3284; '>FA</span><span style='color: #FF5200'>DI</span> TOWER</span>, Tam Quang,Xã Yên Thắng, Huyện Ý Yên,Tỉnh Nam Định."/>
         </div>
-        <div class="column">
+        <div class="column mt-2">
            <Address 
               address-name="Ngã tư T50, Đường Nguyễn Tất Thành - Phường Tích Sơn - Thành phố Vĩnh Yên - Vĩnh Phúc."
               link-to-map="https://goo.gl/maps/GuFaaNEWNA2q7YN47"
@@ -99,13 +102,13 @@
         </div>
       </div>
       <div class="is-flex-grow-1">
-        <div class="column">
+        <div class="column mt-2">
            <Address 
-              address-name="Ô BT 1 Khu Đô Thị Hòn Cặp Bè, Bạch Đằng, Thành Phố Hạ Long, Tỉnh Quảng Ninh (CQ), Bạch Đằng, Thành Phố Hạ Long, Tỉnh Quảng Ninh"
+              address-name="Ô BT 1 Khu Đô Thị Hòn Cặp Bè, Bạch Đằng, Thành Phố Hạ Long, Tỉnh Quảng Ninh (CQ)"
               link-to-map="https://goo.gl/maps/WfyYYjmga7vzDv7HA"
             />
         </div>
-        <div class="column">
+        <div class="column mt-2">
           <Address 
               address-name="125/7 Trường Chinh, Tân Thới Nhất, Quận 12, TP. HCM."
               link-to-map="https://goo.gl/maps/QExyrvN2yEfH35hTA"
@@ -144,8 +147,15 @@ export default {
     loading: false,
     showMessage: false,
     isSuccess: false,
-    message: ""
+    message: "",
+    width: window.innerWidth,
   }),
+   mounted()  {
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize)
+  },
   computed: {
     styleError() {
       const style = {};
@@ -160,9 +170,27 @@ export default {
       style.borderLeft = `5px solid #25AE88 !important`;
       style.color = "##25AE88 !important";
       return style;
+    },
+    styleContactContainer() {
+      const style = {}
+      style.flexDirection = this.width && this.width < 750 ? 'column' : 'row !important'
+      style.width      = this.width && this.width < 750 ? 'auto' : '100%'
+      style.height = this.width && this.width < 750 ? '800px' : 'auto'
+      style.padding = this.width && this.width < 750 ? '0 15px 15px 15px !important' : '15px'
+      style.margin = this.width && this.width < 750 ? '10px' : '0 5px !important'
+      return style
+    },
+    styleP() {
+      const style = {}
+      style.display = this.width && this.width < 750 ? 'block' : 'none'
+      return style
     }
   },
   methods: {
+    handleResize(event) {
+      this.width = event.currentTarget.innerWidth;
+      console.log(this.width);
+    },
     async submit() {
       const result = await this.$refs.observer.validate();
       if (!result) {
@@ -186,7 +214,7 @@ export default {
             this.showMessage = true;
             this.isSuccess = false;
             this.message =
-              '<span>Đã có lỗi xảy ra</span> <a href="tel:0866230662" class="tel">Ấn vào đây để gọi >></a>';
+              'Đã có lỗi xảy ra, vui lòng thử lại sau :( !';
             setTimeout(() => {
               this.showMessage = false;
             }, 7000);
@@ -196,7 +224,7 @@ export default {
           this.showMessage = true;
           this.isSuccess = false;
           this.message =
-            '<span>Đã có lỗi xảy ra</span> <a href="tel:0866230662" class="tel">Ấn vào đây để gọi >></a>';
+            'Đã có lỗi xảy ra, vui lòng thử lại sau :( !';
           setTimeout(() => {
             this.showMessage = false;
           }, 7000);
@@ -217,16 +245,45 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import "~normalize.css";
-@import "~reset-css/_reset.scss";
+<style lang="scss" scoped>
+
+.address-container {
+  color: #031D35;
+  font-size: 16px;
+  position: relative;
+  left: 0;
+  .address-name {
+      font-size: 13px;
+      line-height: 1.5;
+      font-weight: 500;
+  }
+  .location {
+      width: 40px;
+      height: 40px;
+  }
+}
+.go-to-map {
+    padding: 4px 4px 4px 6px !important;
+    background: #2469c4;
+    border-radius: 5px;
+    color: white;
+    display: flex;
+    align-items: center;
+    text-decoration: none !important;
+    font-size: 12px !important;
+    &:hover {
+        background: #45b4e4 !important;
+        transition: background 0.3s;
+    }
+}
+
 
 .contact-us {
   width: 100%;
   .contact-address {
     .column {
       width: 100%;
-      height: 60px;
+      height: auto;
     }
   }
 }
@@ -256,11 +313,6 @@ export default {
 
 .contact-container {
   display: flex;
-  width: 100%;
-  height: auto;
-  margin: 10px;
-  border-radius: 5px;
-  padding: 15px;
   background-image: linear-gradient(to right, #c5adf1, #a5725e);
   &__notification {
     position: fixed;
@@ -293,26 +345,6 @@ export default {
     display: flex;
     flex-direction: column;
     flex: 1;
-    section {
-      div {
-        label {
-          font-size: 14px;
-          font-weight: 500;
-        }
-        .control {
-          input {
-            font-size: 14px;
-          }
-          textarea {
-            font-size: 14px !important;
-          }
-        }
-      }
-      button {
-        font-size: 14px;
-        width: 100px;
-      }
-    }
   }
   .contact__side-right {
     flex: 1;
@@ -343,40 +375,5 @@ export default {
   }
 }
 
-@media screen and (max-width: 600px) {
-  .contact-address {
-    flex-direction: column;
-  }
-  .contact-side__title {
-    display: block;
-  }
 
-  .contact-container {
-    flex-direction: column;
-    width: auto;
-    padding: 0 15px 15px 15px !important;
-    height: 800px !important;
-    margin: 0 5px;
-
-    .contact__side-left {
-      margin-top: 10px;
-    }
-
-    .contact__side-right {
-      margin: 10px 0;
-    }
-  }
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-}
 </style>
